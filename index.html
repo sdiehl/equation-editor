@@ -1,0 +1,97 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Equation Editor</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="js/jquery-mathml.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/jquery.tmpl.js"></script>
+  <script src="js/underscore.js"></script>
+  <script src="js/backbone.js"></script>
+
+  <script src="js/views.js"></script>
+  <script src="js/templates.js"></script>
+
+</head>
+
+<body>
+
+  <div id="container">
+    <header>
+        <h1>Equation Editor</h1>
+    </header>
+    
+    <div id="main">
+        <div id="palette">
+        </div>
+        <div id="equation">
+            <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup>
+                  <mi _moz-math-font-style="italic">x</mi>
+                  <mn>2</mn>
+                </msup>
+                <msup>
+                  <mi _moz-math-font-style="italic">y</mi>
+                  <mn id="el">2</mn>
+                </msup>
+              </mrow>
+            </math>
+        </div>
+    </div>
+
+    
+    <footer>
+    </footer>
+  </div>
+
+  <script id="mml_template" type="text/x-jquery-tmpl">
+     <math xmlns="http://www.w3.org/1998/Math/MathML">
+         {{html contents}}
+     </math>
+  </script>
+
+  <script id="category" type="text/x-jquery-tmpl">
+     <h3>${name}</h3>
+     {{each buttons}}
+         <button>
+             {{html $value}}
+         </button>
+     {{/each}}
+  </script>
+
+  <script>
+
+    var selection = [];
+    var hover_color = 'gray';
+
+    $(document).ready(function() {
+
+        init_palettes();
+    
+        $('math *').live('click', function(e) {
+            $(this).toggleClass('selected');
+            e.stopPropagation();
+        });
+
+        $('math *').live('mouseover mouseout', function(e) {
+            if (e.type == 'mouseover') {
+                $(this).css('border','1px solid ' + hover_color);
+                e.stopPropagation();
+            } else {
+                $(this).css('border',null);
+                e.stopPropagation();
+            }
+        });
+
+    });
+
+  </script>
+  
+</body>
+</html>
+
