@@ -55,8 +55,10 @@ var ConstructorButton = Backbone.View.extend({
     substitute: function(e) {
         // Add more advanced functionality later..
         var mml = this.model.withPlaceholder();
-        console.log(mml);
-        Editor.selection.replaceWith(mml);
+
+        if(Editor.selection) {
+            Editor.selection.replaceWith(mml);
+        }
     },
     
 });
