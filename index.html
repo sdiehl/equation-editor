@@ -50,18 +50,14 @@
   </div>
 
   <script id="mml_template" type="text/x-jquery-tmpl">
-     <math xmlns="http://www.w3.org/1998/Math/MathML">
-         {{html contents}}
-     </math>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+             {{html contents}}
+         </math>
   </script>
 
   <script id="category" type="text/x-jquery-tmpl">
      <h3>${name}</h3>
-     {{each buttons}}
-         <button>
-             {{html $value}}
-         </button>
-     {{/each}}
+     <div class="constructors"></div>
   </script>
 
   <script>
@@ -74,7 +70,17 @@
         init_palettes();
     
         $('math *').live('click', function(e) {
-            $(this).toggleClass('selected');
+            if ($(this).hasClass('selected')) {
+
+                $(this).removeClass('selected');
+                Editor.selection = null;
+
+            } else {
+
+                $(this).addClass('selected');
+                Editor.selection = $(this);
+
+            }
             e.stopPropagation();
         });
 
