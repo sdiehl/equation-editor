@@ -35,6 +35,56 @@ var Constructor = Backbone.Model.extend({
     }
 })
 
+var select = function(selector, exclusive) {
+    var el = $(selector);
+
+    if(exclusive && Editor.selection) {
+        Editor.selection.removeClass('selected');
+        Editor.selection = null;
+    }
+
+    if (el.hasClass('selected')) {
+        el.removeClass('selected');
+        Editor.selection = null;
+    } else {
+        el.addClass('selected');
+        Editor.selection = el;
+    }
+}
+
+var move_left = function() {
+    if(Editor.selection) {
+        var prev = Editor.selection.prev();
+        if(prev) {
+            select(Editor.selection.prev(), true); 
+        }
+    }
+}
+
+var move_right = function() {
+    if(Editor.selection) {
+        var next = Editor.selection.next();
+        if(next) {
+            select(Editor.selection.next(), true); 
+        }
+    }
+}
+
+var move_up = function() {
+    if(Editor.selection) {
+        var parent = Editor.selection.parent();
+        if(parent.isMath()) {
+            select(parent, true); 
+        }
+    }
+}
+
+var remove = function() {
+    if(Editor.selection) {
+        Editor.selection.replaceWith('<mi>▮</mi>');
+    }
+}
+
 var ConstructorButton = Backbone.View.extend({
 
     tagName: 'button',
@@ -80,12 +130,16 @@ var CategoryView = Backbone.View.extend({
             name: this.options.name,
         }).appendTo("#palette");
 
+        var $cs = this.$('.constructors');
+
         this.constructors.each(function(cst) {
             var btn = new ConstructorButton({
                 model: cst,
             }).render();
-            this.$('.constructors').append(btn.el); 
-        })
+
+            $cs.append(btn.el); 
+        });
+
         return this;
     },
 
@@ -126,6 +180,8 @@ function init_palettes() {
             Editor.constructors.add(cst);
         }
     }
+
+    console.log(categories);
 
     for(var cat in categories) {
         cat = categories[cat];

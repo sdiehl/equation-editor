@@ -14,7 +14,7 @@ math {
 }
 
 #palette {
-    border-left: 1px solid #ccc;
+    border: 1px solid #ccc;
     background: white;
     position: relative;
     min-height: 100px;
@@ -22,12 +22,13 @@ math {
     right: 0px;
     width: 30%;
     float: right;
+    padding: 10px;
 }
 
 #main {
     width: 100%;
     border: 1px solid #ccc;
-    height: 100px;
+    min-height: 100px;
 }
 
 .selected {

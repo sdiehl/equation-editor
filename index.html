@@ -1,4 +1,7 @@
 <!doctype html>
+<!-- Firefox 3.6 compatability can be obtained by switching the
+doctype to XHTML, but this is a real pain -->
+
 <head>
   <meta charset="utf-8">
 
@@ -10,6 +13,8 @@
   <script src="js/jquery-mathml.js"></script>
   <script src="js/jquery-ui.js"></script>
   <script src="js/jquery.tmpl.js"></script>
+  <script src="js/jquery.hotkeys.js"></script>
+
   <script src="js/underscore.js"></script>
   <script src="js/backbone.js"></script>
 
@@ -24,6 +29,8 @@
     <header>
         <h1>Equation Editor</h1>
     </header>
+    <p>This demo only works in Firefox 4 beta and nightly builds
+    of WebKit, at this time.</p>
     
     <div id="main">
         <div id="palette">
@@ -43,7 +50,6 @@
             </math>
         </div>
     </div>
-
     
     <footer>
     </footer>
@@ -56,8 +62,10 @@
   </script>
 
   <script id="category" type="text/x-jquery-tmpl">
-     <h3>${name}</h3>
-     <div class="constructors"></div>
+     <div class="category">
+         <h3>${name}</h3>
+         <div class="constructors"></div>
+     </div>
   </script>
 
   <script>
@@ -70,17 +78,9 @@
         init_palettes();
     
         $('math *').live('click', function(e) {
-            if ($(this).hasClass('selected')) {
-
-                $(this).removeClass('selected');
-                Editor.selection = null;
-
-            } else {
-
-                $(this).addClass('selected');
-                Editor.selection = $(this);
-
-            }
+            // If the shift key is held then select multiple
+            // terms
+            select(this, e.shiftKey);
             e.stopPropagation();
         });
 
@@ -93,6 +93,11 @@
                 e.stopPropagation();
             }
         });
+
+        $(document).bind('keydown','left', move_left);
+        $(document).bind('keydown','right', move_right);
+        $(document).bind('keydown','up', move_up);
+        $(document).bind('keydown','del', remove);
 
     });
 
